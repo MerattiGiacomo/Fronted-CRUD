@@ -5,7 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TabellaEmployeeComponent } from './tabella-employee/tabella-employee.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {MatTableModule} from '@angular/material/table';
+import { DataRestClientService } from './data-rest-client.service';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -13,12 +16,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     TabellaEmployeeComponent
   ],
   imports: [
+    HttpClientModule,
+    MatTableModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSlideToggleModule
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [DataRestClientService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
