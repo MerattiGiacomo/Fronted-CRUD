@@ -4,6 +4,8 @@ import { ServerResponse } from 'http';
 import { DataRestClientService } from '../data-rest-client.service';
 import { DataObject, Employee  } from '../types/Employee';
 
+const URL: string = "http://localhost:8080/employees";
+
 @Component({
   selector: 'app-tabella-employee',
   templateUrl: './tabella-employee.component.html',
@@ -11,8 +13,9 @@ import { DataObject, Employee  } from '../types/Employee';
 })
 export class TabellaEmployeeComponent implements OnInit {
 
+  pageNumber: number = 0;
   constructor(private restClient: DataRestClientService) {
-    this.loadData("http://localhost:8080/employees");
+    this.reload();
     this.dataSource = new MatTableDataSource(this.data?._embedded.employees)
   }
 
@@ -22,15 +25,57 @@ export class TabellaEmployeeComponent implements OnInit {
 
   data: DataObject | undefined;
   dataSource: MatTableDataSource<Employee>;
-  displayColumns: string[] = ["id", "firstName", "lastName", "gender" , "birthDate", "hireDate"];
+  displayColumns: string[] = ["id", "firstName", "lastName", "gender" , "birthDate", "hireDate", "action", "edit"];
+  editingEmployee: Employee | undefined;
 
-  loadData(url: string): void{
-    this.restClient.getDataRows(url).subscribe(
+  loadData(url:string, page?: number): void{
+    this.restClient.getDataRows(url, page).subscribe(
       ServerResponse => {
+        this.pageNumber = ServerResponse.page.number;
         this.data = ServerResponse,
         this.dataSource.data = this.data._embedded.employees
       }
     )
   }
+  deleteRow(elementID: number){
+    this.restClient.deleteRow(URL+"/"+elementID).subscribe(
+      () => this.reload()
+    );
+  }
+
+  modifyRow(element: Employee){
+    this.editingEmployee = {...element};
+  }
+
+  saveModify(){
+    this.restClient.putRow(URL+"/"+this.editingEmployee!.id.toString(), this.editingEmployee!).subscribe(
+      () => {
+        this.editingEmployee = undefined;
+        this.reload();
+      }
+    );
+  }
+
+  reload(){
+    this.loadData(URL, this.pageNumber);
+  }
+
+  startPage(){
+    this.loadData(URL, 0);
+  }
+
+  previousPage(){
+    this.loadData(URL, this.pageNumber - 1);
+  }
+
+  nextPage(){
+    this.loadData(URL, this.pageNumber + 1);
+  }
+
+  endPage(){
+    this.loadData(this.data!._links.last.href.toString());
+  }
+
+
 
 }

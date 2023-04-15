@@ -1,6 +1,39 @@
-<table mat-table [dataSource] = "dataSource" class="mat-elevation-z8">
-    
-    <!-- Id Column -->
+<!-- modify employee-->
+<div *ngIf="editingEmployee" class="editForm">
+  <h3>
+    Stai modificando dipendente {{editingEmployee.id}}
+  </h3>
+
+  <label>fistName</label>
+  <input required type="text" [(ngModel)]="editingEmployee.firstName">
+
+  <label>lastName</label>
+  <input required type="text" [(ngModel)]="editingEmployee.lastName">
+
+  <label>gender</label>
+  <select required [(ngModel)]="editingEmployee.gender">
+    <option value="M">M</option>
+    <option value="F">F</option>
+  </select>
+
+  <label>birthDate</label>
+  <input required type="date" [(ngModel)]="editingEmployee.birthDate">
+
+  <label>hireDate</label>
+  <input required type="date" [(ngModel)]="editingEmployee.hireDate">
+  <br>
+  <button (click)="editingEmployee = undefined">
+    Annulla
+  </button>
+  &nbsp;
+  <button (click)="saveModify()">
+    Modifica
+  </button>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!-- Id Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> Id </th>
     <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -37,13 +70,30 @@
   </ng-container>
 
   <!-- action Column -->
-  <!--
   <ng-container matColumnDef="action">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let element; let i = index"><button (click) = "disabilita(i)"><mat-icon>delete</mat-icon></button></td>
+    <th mat-header-cell *matHeaderCellDef>Elimina</th>
+    <td mat-cell *matCellDef="let element"><button (click)="deleteRow(element.id)"><mat-icon>delete</mat-icon></button>
+    </td>
   </ng-container>
-    -->
-    
+
+  <!-- edit Column -->
+  <ng-container matColumnDef="edit">
+    <th mat-header-cell *matHeaderCellDef>Modifica</th>
+    <td mat-cell *matCellDef="let element">
+      <button (click)="modifyRow(element)" [disabled]="editingEmployee">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
   <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayColumns;">
 </table>
+
+<div class="buttons">
+  <button [disabled]="pageNumber == 0" (click)="startPage()">&lt;&lt;</button>
+  <button [disabled]="pageNumber == 0" (click)="previousPage()">&lt;</button>
+  <div>{{pageNumber}}</div>
+  <button [disabled]="!this.data!._links.next" (click)="nextPage()">&gt;</button>
+  <button [disabled]="!this.data!._links.next" (click)="endPage()">&gt;&gt;</button>
+</div>

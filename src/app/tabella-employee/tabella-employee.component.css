@@ -1,5 +1,29 @@
 table{
     width: 95%;
+    height: 95%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.buttons{
+    text-align: center;
+    padding: 10px;
+}
+
+.buttons button{
+    margin: 3px;
+}
+
+.buttons div {
+    display: inline-block;
+    padding-inline: 3px;
+}
+
+input, select{
+    display: block;
+}
+
+.editForm{
+    width: max-content;
+    margin-inline: auto;
 }
