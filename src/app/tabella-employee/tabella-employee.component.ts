@@ -48,6 +48,15 @@ export class TabellaEmployeeComponent implements OnInit {
   }
 
   saveModify(){
+    const values = Object.values(this.editingEmployee!);
+
+    for (const value of values) {
+      if(!value){
+        alert("Inserire dei valori");
+        return;
+      }
+    }
+
     this.restClient.putRow(URL+"/"+this.editingEmployee!.id.toString(), this.editingEmployee!).subscribe(
       () => {
         this.editingEmployee = undefined;

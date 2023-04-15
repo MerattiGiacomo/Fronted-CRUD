@@ -5,22 +5,22 @@
   </h3>
 
   <label>fistName</label>
-  <input required type="text" [(ngModel)]="editingEmployee.firstName">
+  <input type="text" [(ngModel)]="editingEmployee.firstName">
 
   <label>lastName</label>
-  <input required type="text" [(ngModel)]="editingEmployee.lastName">
+  <input type="text" [(ngModel)]="editingEmployee.lastName">
 
   <label>gender</label>
-  <select required [(ngModel)]="editingEmployee.gender">
+  <select  [(ngModel)]="editingEmployee.gender">
     <option value="M">M</option>
     <option value="F">F</option>
   </select>
 
   <label>birthDate</label>
-  <input required type="date" [(ngModel)]="editingEmployee.birthDate">
+  <input  type="date" [(ngModel)]="editingEmployee.birthDate">
 
   <label>hireDate</label>
-  <input required type="date" [(ngModel)]="editingEmployee.hireDate">
+  <input  type="date" [(ngModel)]="editingEmployee.hireDate">
   <br>
   <button (click)="editingEmployee = undefined">
     Annulla
