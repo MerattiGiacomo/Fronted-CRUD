@@ -1,35 +1,16 @@
-<!-- modify employee-->
-<div *ngIf="editingEmployee" class="editForm">
-  <h3>
-    Stai modificando dipendente {{editingEmployee.id}}
-  </h3>
+<app-employee-form
+  [hidden]="isEditingFormHidden"
+  [employee]="editingEmployee"
+  (submitted)="saveModify($event)"
+  (cancelled)="isEditingFormHidden = true"
+></app-employee-form>
 
-  <label>fistName</label>
-  <input type="text" [(ngModel)]="editingEmployee.firstName">
-
-  <label>lastName</label>
-  <input type="text" [(ngModel)]="editingEmployee.lastName">
-
-  <label>gender</label>
-  <select  [(ngModel)]="editingEmployee.gender">
-    <option value="M">M</option>
-    <option value="F">F</option>
-  </select>
-
-  <label>birthDate</label>
-  <input  type="date" [(ngModel)]="editingEmployee.birthDate">
-
-  <label>hireDate</label>
-  <input  type="date" [(ngModel)]="editingEmployee.hireDate">
-  <br>
-  <button (click)="editingEmployee = undefined">
-    Annulla
-  </button>
-  &nbsp;
-  <button (click)="saveModify()">
-    Modifica
-  </button>
-</div>
+<app-employee-form
+  [hidden]="isNewFormHidden"
+  [isNew]="true"
+  (submitted)="applyAdd($event)"
+  (cancelled)="isNewFormHidden = true"
+></app-employee-form>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -72,7 +53,10 @@
   <!-- action Column -->
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef>Elimina</th>
-    <td mat-cell *matCellDef="let element"><button (click)="deleteRow(element.id)" [disabled]="editingEmployee"><mat-icon>delete</mat-icon></button>
+    <td mat-cell *matCellDef="let element">
+      <button (click)="deleteRow(element.id)" [disabled]="!isEditingFormHidden || !isNewFormHidden">
+        <mat-icon>delete</mat-icon>
+      </button>
     </td>
   </ng-container>
 
@@ -80,7 +64,7 @@
   <ng-container matColumnDef="edit">
     <th mat-header-cell *matHeaderCellDef>Modifica</th>
     <td mat-cell *matCellDef="let element">
-      <button (click)="modifyRow(element)" [disabled]="editingEmployee">
+      <button (click)="modifyRow(element)" [disabled]="!isEditingFormHidden || !isNewFormHidden">
         <mat-icon>edit</mat-icon>
       </button>
     </td>
@@ -96,4 +80,8 @@
   <div>{{pageNumber}}</div>
   <button [disabled]="!this.data!._links.next" (click)="nextPage()">&gt;</button>
   <button [disabled]="!this.data!._links.next" (click)="endPage()">&gt;&gt;</button>
+  <br>
+  <button [disabled]="!isEditingFormHidden || !isNewFormHidden" (click)="isNewFormHidden = false">
+    <mat-icon>addbox</mat-icon>
+  </button>
 </div>

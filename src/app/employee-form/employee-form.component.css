@@ -1,0 +1,14 @@
+.editForm{
+    width: max-content;
+    margin-inline: auto;
+    padding: 1rem;
+}
+
+.editForm label:not(:first-of-type){
+    display: inline-block;
+    margin-top: 0.7rem;
+}
+
+input, select{
+    display: block;
+}

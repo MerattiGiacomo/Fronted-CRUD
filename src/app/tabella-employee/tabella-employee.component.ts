@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ServerResponse } from 'http';
 import { DataRestClientService } from '../data-rest-client.service';
-import { DataObject, Employee  } from '../types/Employee';
+import { DataObject, Employee, EMPTY_EMPLOYEE  } from '../types/Employee';
 
 const URL: string = "http://localhost:8080/employees";
 
@@ -13,6 +13,8 @@ const URL: string = "http://localhost:8080/employees";
 })
 export class TabellaEmployeeComponent implements OnInit {
 
+  isEditingFormHidden = true;
+  isNewFormHidden = true;
   pageNumber: number = 0;
   constructor(private restClient: DataRestClientService) {
     this.reload();
@@ -26,7 +28,7 @@ export class TabellaEmployeeComponent implements OnInit {
   data: DataObject | undefined;
   dataSource: MatTableDataSource<Employee>;
   displayColumns: string[] = ["id", "firstName", "lastName", "gender" , "birthDate", "hireDate", "action", "edit"];
-  editingEmployee: Employee | undefined;
+  editingEmployee: Employee = EMPTY_EMPLOYEE;
 
   loadData(url:string, page?: number): void{
     this.restClient.getDataRows(url, page).subscribe(
@@ -45,10 +47,11 @@ export class TabellaEmployeeComponent implements OnInit {
 
   modifyRow(element: Employee){
     this.editingEmployee = {...element};
+    this.isEditingFormHidden = false;
   }
 
-  saveModify(){
-    const values = Object.values(this.editingEmployee!);
+  saveModify(employee: Employee){
+    const values = Object.values(employee);
 
     for (const value of values) {
       if(!value){
@@ -57,9 +60,33 @@ export class TabellaEmployeeComponent implements OnInit {
       }
     }
 
-    this.restClient.putRow(URL+"/"+this.editingEmployee!.id.toString(), this.editingEmployee!).subscribe(
+    this.restClient.putRow(URL+"/"+employee.id, employee).subscribe(
       () => {
-        this.editingEmployee = undefined;
+        this.isEditingFormHidden = true;
+        this.reload();
+      }
+    );
+  }
+
+  addRow(element: Employee){
+    this.editingEmployee = {...element};
+  }
+
+  applyAdd(employee: Employee){
+    const e: any = employee;
+    delete e.id;
+    const values = Object.values(e);
+
+    for (const value of values) {
+      if(!value){
+        alert("Inserire dei valori");
+        return;
+      }
+    }
+
+    this.restClient.postRow(URL, e).subscribe(
+      () => {
+        this.isNewFormHidden = true;
         this.reload();
       }
     );

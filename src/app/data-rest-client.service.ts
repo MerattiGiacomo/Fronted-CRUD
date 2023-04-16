@@ -23,5 +23,9 @@ export class DataRestClientService {
     return this.http.put(url, employee);
   }
 
+  postRow(url: string, employee: Employee){
+    return this.http.post(url, employee);
+  }
+
   constructor(private http: HttpClient) { }
 }

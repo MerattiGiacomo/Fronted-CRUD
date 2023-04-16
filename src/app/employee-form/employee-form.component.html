@@ -1,0 +1,34 @@
+<!-- modify employee-->
+<div class="editForm">
+    <h3>
+      <ng-container *ngIf="isNew; else modifyingTitle">Aggiungi un nuovo dipendente</ng-container>
+      <ng-template #modifyingTitle>Stai modificando dipendente {{employee.id}}</ng-template>
+    </h3>
+  
+    <label>fistName</label>
+    <input type="text" [(ngModel)]="employee.firstName">
+  
+    <label>lastName</label>
+    <input type="text" [(ngModel)]="employee.lastName">
+  
+    <label>gender</label>
+    <select  [(ngModel)]="employee.gender">
+      <option value="M">M</option>
+      <option value="F">F</option>
+    </select>
+  
+    <label>birthDate</label>
+    <input  type="date" [(ngModel)]="employee.birthDate">
+  
+    <label>hireDate</label>
+    <input  type="date" [(ngModel)]="employee.hireDate">
+    <br>
+    <button (click)="cancel()">
+      Annulla
+    </button>
+    &nbsp;
+    <button (click)="submit()">
+      <ng-container *ngIf="isNew; else modifyingButton">Aggiungi</ng-container>
+      <ng-template #modifyingButton>Modifica</ng-template>
+    </button>
+  </div>

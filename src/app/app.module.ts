@@ -10,12 +10,14 @@ import { DataRestClientService } from './data-rest-client.service';
 import { HttpClientModule } from '@angular/common/http';
 import {MatIconModule} from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { EmployeeFormComponent } from './employee-form/employee-form.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    TabellaEmployeeComponent
+    TabellaEmployeeComponent,
+    EmployeeFormComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,3 +1,12 @@
+export const EMPTY_EMPLOYEE = {
+    id: 0,
+    birthDate: '',
+    gender: '',
+    firstName: '',
+    hireDate: '',
+    lastName: ''
+  };
+
 export interface Employee{
     birthDate: string,
     firstName: string,
