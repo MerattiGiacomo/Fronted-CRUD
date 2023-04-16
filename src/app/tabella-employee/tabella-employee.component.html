@@ -72,7 +72,7 @@
   <!-- action Column -->
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef>Elimina</th>
-    <td mat-cell *matCellDef="let element"><button (click)="deleteRow(element.id)"><mat-icon>delete</mat-icon></button>
+    <td mat-cell *matCellDef="let element"><button (click)="deleteRow(element.id)" [disabled]="editingEmployee"><mat-icon>delete</mat-icon></button>
     </td>
   </ng-container>
 
