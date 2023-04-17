@@ -36,6 +36,11 @@ export class TabellaEmployeeComponent implements OnInit {
         this.pageNumber = ServerResponse.page.number;
         this.data = ServerResponse,
         this.dataSource.data = this.data._embedded.employees
+        
+        if(this.data._embedded.employees.length == 0)
+        {
+          this.previousPage();
+        }
       }
     )
   }
